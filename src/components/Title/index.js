@@ -20,7 +20,7 @@ const Caption = styled.span`
   }
 `;
 const Logo = styled.svg`
-  padding: 10px;
+  padding: 0 10px 0 0;
   @media screen and (min-width: 768px) {
     margin-top: 15px;
   }

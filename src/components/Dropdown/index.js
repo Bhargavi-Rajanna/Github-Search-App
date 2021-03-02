@@ -2,34 +2,76 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const DropDownContainer = styled.div`
+  position: relative;
   min-width: 120px;
-  margin: 0 auto;
   text-align: center;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #d8d0d0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+  @media screen and (max-width: 768px) {
+    padding: 5px;
+  }
 `;
 
 const DropDownHeader = styled.div`
-  padding: 5px;
-  border-bottom: 1px solid #e5e5e5;
   font-weight: 500;
   font-size: 1em;
   color: #959595;
   background: #ffffff;
-  @media screen and (min-width: 768px) {
-    padding: 10px;
-  }
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const DropDownOptionsContainer = styled.div`
-  border-bottom: 1px solid #e5e5e5;
+const DropDownOptionsContainer = styled.ul`
+  position: absolute;
+  top: 39px;
+  left: -1px;
+  width: 100%;
+  display: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-left: 1px solid #d8d0d0;
+  border-right: 1px solid #d8d0d0;
+
+  @media screen and (min-width: 768px) {
+    top: 49px;
+  }
+
+  ${({ isOpen }) =>
+    isOpen &&
+    `
+    display:block;
+  `}
+`;
+
+const DropDownOption = styled.li`
   padding: 10px;
+  border-bottom: 1px solid #e5e5e5;
   color: #959595;
+  cursor: pointer;
+  background-color: #ffffff;
+
+  @media screen and (min-width: 768px) {
+    padding: 15px;
+  }
 `;
 
 const DropDownCaret = styled.svg`
   height: 24px;
   width: 24px;
   fill: #959595;
+
+  ${({ isOpen }) =>
+    isOpen &&
+    `
+    transform: rotate(180deg);
+  `}
 `;
 
 const options = ["Users", "Repositories"];
@@ -52,35 +94,28 @@ const Dropdown = ({ onClick }) => {
   return (
     <DropDownContainer>
       <DropDownHeader onClick={toggleDropdown}>
-        <div
-          onClick={toggleDropdown}
-          style={{ display: "inline-flex", alignItems: "center" }}
+        <div>{selectedOption || "Users"}</div>
+        <DropDownCaret
+          isOpen={isOpen}
+          viewBox="0 0 48 48"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <div>{selectedOption || "Users"}</div>
-
-          <div>
-            <DropDownCaret
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M14 20l10 10 10-10z" />
-              <path d="M0 0h48v48h-48z" fill="none" />
-            </DropDownCaret>
-          </div>
-        </div>
+          <path d="M14 20l10 10 10-10z" />
+          <path d="M0 0h48v48h-48z" fill="none" />
+        </DropDownCaret>
       </DropDownHeader>
 
       {isOpen && (
-        <>
+        <DropDownOptionsContainer isOpen={isOpen}>
           {options.map((option) => (
-            <DropDownOptionsContainer
+            <DropDownOption
               onClick={onOptionClicked(option)}
               key={Math.random()}
             >
               {option}
-            </DropDownOptionsContainer>
+            </DropDownOption>
           ))}
-        </>
+        </DropDownOptionsContainer>
       )}
     </DropDownContainer>
   );

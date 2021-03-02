@@ -2,25 +2,28 @@ import styled from "styled-components";
 import { dateConvertor } from "../../utils/dateConvertor";
 
 const Wrapper = styled.div`
-  display: inline-flex;
+  display: flex;
   border: 2px solid #e5e5e5;
   padding: 20px;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 `;
 const UserImage = styled.img`
-  max-width: 100px;
-  min-width: 100px;
-  max-height: 100px;
+  max-width: 100%;
   margin-bottom: 10px;
-  object-fit: contain;
+  justify-self: center;
 
   @media screen and (min-width: 768px) {
-    // margin: 0 auto;
     max-width: 200px;
-    min-width: 200px;
     max-height: 200px;
   }
+`;
+
+const Username = styled.span`
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const DIV = styled.div`
@@ -46,8 +49,9 @@ const SearchResult = ({ result, type }) => {
         <>
           <div>
             <UserImage
-              src={result.owner.avatar_url}
+              src={result.owner?.avatar_url}
               alt="avatar_url"
+              loading="lazy"
             ></UserImage>
           </div>
 
@@ -88,9 +92,13 @@ const SearchResult = ({ result, type }) => {
         </>
       ) : (
         <>
-          <UserImage src={result.avatar_url} alt="avatar_url"></UserImage>
+          <UserImage
+            src={result.avatar_url}
+            loading="lazy"
+            alt="avatar_url"
+          ></UserImage>
 
-          <span>{result.login}</span>
+          <Username>{result.login}</Username>
         </>
       )}
     </Wrapper>

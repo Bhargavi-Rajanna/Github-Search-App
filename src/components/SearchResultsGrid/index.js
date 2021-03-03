@@ -1,7 +1,7 @@
 import SearchResult from "../SearchResult";
 import styled from "styled-components";
+import React, { memo } from "react";
 
-import ResultsCountMessage from "../ResultsCountMessage";
 const GridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2,  1fr);
@@ -17,45 +17,19 @@ const GridWrapper = styled.div`
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 20px;
-    margin-top: 50px;
+    margin-top: 75px;
   }
 `;
 
-const SearchResultsGrid = ({ type, repos, users }) => {
-  // console.log("USERS", users);
-  // console.log("REPOS", repos);
-  //console.log("BHAR RESULTS", results);
-
+const SearchResultsGrid = memo(({ type, listItems }) => {
   return (
-    <>
-      <ResultsCountMessage
-        type={type}
-        count={
-          type === "users"
-            ? users && users.total_count
-            : repos && repos.total_count
-        }
-      />
-
-      <GridWrapper className="grid-wrapp">
-        {type !== "users" ? (
-          <>
-            {repos &&
-              repos.items.map((repo) => (
-                <SearchResult key={repo.id} result={repo} type={type} />
-              ))}
-          </>
-        ) : (
-          <>
-            {users &&
-              users.items.map((user) => (
-                <SearchResult key={user.id} result={user} type={type} />
-              ))}
-          </>
-        )}
-      </GridWrapper>
-    </>
+    <GridWrapper>
+      {listItems &&
+        listItems.map((item, index) => (
+          <SearchResult key={`${item.id}-${index}`} result={item} type={type} />
+        ))}
+    </GridWrapper>
   );
-};
+});
 
 export default SearchResultsGrid;

@@ -26,77 +26,84 @@ const Username = styled.span`
   text-overflow: ellipsis;
 `;
 
-const DIV = styled.div`
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(85px, 150px));
-  // grid-template-columns: repeat(2, 1fr);
   overflow-wrap: break-word;
   padding: 3px 5px 5px;
   font-size: 0.8em;
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, minmax(100px, 200px));
-    // grid-template-columns: repeat(2, 1fr);
     padding: 5px 10px 10px;
-    font-size: 1em;
+    font-size: 0.8em;
+    grid-row-gap: 5px;
+
+    > div:nth-child(1) {
+      font-weight: 600;
+      font-size: 1em;
+    }
   }
 `;
 
 const SearchResult = ({ result, type }) => {
   return (
     <Wrapper>
-      {type !== "users" ? (
+      {type !== "users" && result.type !== "User" ? (
         <>
+          <a href={result.html_url} target="_blank" rel="noopener noreferrer">
+            <div>
+              <UserImage
+                src={result.owner?.avatar_url}
+                alt="avatar_url"
+                loading="lazy"
+              ></UserImage>
+            </div>
+          </a>
           <div>
-            <UserImage
-              src={result.owner?.avatar_url}
-              alt="avatar_url"
-              loading="lazy"
-            ></UserImage>
-          </div>
-
-          <div>
-            <DIV>
+            <ListItem>
               <div> Full Name : </div>
               <div> {result.full_name}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Repos Language : </div>
               <div> {result.language ? result.language : "NA"}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Private : </div>
               <div> {result.private ? "true" : "false"}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Pushed At : </div>
               <div>{dateConvertor(result.pushed_at)}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Stars : </div>
               <div>{result.stargazers_count}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Watchers : </div>
               <div>{result.watchers}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Forks : </div>
               <div>{result.forks}</div>
-            </DIV>
-            <DIV>
+            </ListItem>
+            <ListItem>
               <div> Open Issues : </div>
               <div>{result.open_issues}</div>
-            </DIV>
+            </ListItem>
           </div>
         </>
       ) : (
         <>
-          <UserImage
-            src={result.avatar_url}
-            loading="lazy"
-            alt="avatar_url"
-          ></UserImage>
+          <a href={result.html_url} target="_blank" rel="noopener noreferrer">
+            <UserImage
+              src={result.avatar_url}
+              loading="lazy"
+              alt="avatar_url"
+            ></UserImage>{" "}
+          </a>
 
           <Username>{result.login}</Username>
         </>

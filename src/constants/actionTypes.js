@@ -1,0 +1,2 @@
+export const UPDATE_USERS = "UPDATE_USERS";
+export const ADD_SEARCH_STRING = "ADD_SEARCH_STRING";

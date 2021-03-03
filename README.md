@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+
+
+### Project execution
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+`npm start` :   Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-In the project directory, you can run:
+`npm test` : Launches the test runner in the interactive watch mode.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `Workflow/Tasks Completed `
+1. When the user doesn't have any input or clears the input, the input fields is shown in the middle of the page.
+2. The input feild is available for the user to search for users or repositories and a dropdown is available for the user to choose between users and repositories.
+3. Once the user starts typing the input feild moves to the top of the page as per the requirement.
+4. API call is made when the user types 3 or more characters in the input feild and clicks on enter key.I have wrapped the input feild around form inorder to reduce multiple API calls. I could have debounced making calls say at an interval for 500ms but I felt that is not a good UI design as it gives user the feeling that nothing is happening while they are typing. So preffered making click on enter key just like Github is currently implemented.
+5. While the API call is resolving the user can see "loading..." on the screen. Once the response is recieved user information is displayed below the input feilds in grids.( 2 columns if screen width < 768px else it displays in 3 columns).
+6. The users info displayes user image and user name. The repositories displays info like name, repository language, private/public repo, published date and time, stars, watchers, forks, open issues and the user image.
+7. The user can scroll down to see more results ( Infinite scrolling ) until the results are done.
+8. If the user clears the input or types less than three characters, clear the results and show the empty screen.
+9. If the user changes the "Entity type" value in the dropdown and user has 3 or more characters in the input already, the results get refreshed only on clicking upon enter key( Again could have the api call on change of entity but I wanted to maintain the workflow of how the api calls are made).
+10. On click on user image it redirects you to the github profile of that user.
+11. I am maintaining the recent searches done by users specific to the entity type. Currently showing last 3 recent searches( this number can be configured according to our needs). 
+12. On click of the recent search string , refreshes the data accordingly (Debounce function is used to avoid multiple clicks).
+13. The app is designed using styled components. The screens are responsive and also mobile-friendly.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+ 
+ ### `Opinions/Assumptions`
+In my opinion, it is not good idea to save the API response data as the data is volatile. 
+I understand storing the data would make rendering faster. However I feel we should consider that with multiple requests the data will also grow and at one point it may not be sustainable. If the data gets large, it will take long to fetch the data ( I understand we can do pagination and send only subset of data. But I just feel it just gets complicated going forward). Since the data we are dealing with is volatile. we might face data sync issues as there wont be API calls, which means we cant be sure of the data validity( However we could fetch the data and store again or flush it after certain intervals). 
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### `Error Handling`
+If the API rate limit is exceeded, we display a message "API rate limit exceeded for your IP. Check out github API documentation for more details ".
+If the user/repository doesn't exist in GitHub, an message with the content - "0 users/ repositiry found" is displayed on the screen.
